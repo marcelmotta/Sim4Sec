@@ -1,4 +1,8 @@
-﻿-- FIX LEADING ZEROES IN DICOFRE FIELD AND ROUND VALUES FOR POPULATION FORECASTS
+﻿/** ETL - Data Extraction and Transformation *//
+
+USE [Sim4Sec];
+
+-- FIX LEADING ZEROES IN DICOFRE FIELD AND ROUND VALUES FOR POPULATION FORECASTS
 IF OBJECT_ID('tempdb.dbo.##tempPop') IS NOT NULL
 DROP TABLE [##tempPop]
 CREATE TABLE [##tempPop] (
@@ -81,3 +85,72 @@ ON [area_freg].DICOFRE = [pop_summary].DICOFRE
 COLLATE Latin1_general_CI_AI
 WHERE [socecon_data2011].Índice = 'Area'
 ORDER by DI, DICO, DICOFRE ASC
+
+/** ETL - Data Load *//
+
+USE [Sim4Sec_DW];
+
+-- LOAD DIM_ANO
+INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Ano] (
+	anoAno
+)
+SELECT DISTINCT
+	[crime_hist].Ano
+FROM [Sim4Sec].[dbo].[crime_hist]
+
+-- LOAD DIM_CRIME
+INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Crime] (
+	criClasse,
+	criSubclasse,
+	criDescrição
+)
+SELECT
+	[crime_meta].Classe,
+	[crime_meta].Subclasse,
+	[crime_meta].Descrição
+FROM [Sim4Sec].[dbo].[crime_meta]
+
+-- LOAD DIM_SOCECON
+INSERT INTO [Sim4Sec_DW].[dbo].[Dim_SocEcon] (
+	socÍndice,
+	socDescrição
+)
+SELECT
+	[socecon_meta].Índice,
+	[socecon_meta].Descrição
+FROM [Sim4Sec].[dbo].[socecon_meta]
+
+-- LOAD DIM_MUN
+INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Mun] (
+	codDICO,
+	codDistrito,
+	codMunicípio,
+	codÁreaMun
+)
+SELECT
+	[geo_full].DICO,
+	[geo_full].Distrito,
+	[geo_full].Município,
+	SUM([geo_full].ÁreaFreg) AS ÁreaMun
+FROM [Sim4Sec].[dbo].[geo_full]
+GROUP BY [geo_full].DICO, [geo_full].Distrito,[geo_full].Município
+
+-- LOAD DIM_FREG
+INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Freg] (
+	FK_MunID,
+	codDICOFRE,
+	codFreguesia,
+	codUsoSolo,
+	codÁreaFreg
+)
+SELECT
+	[Dim_Mun].SK_MunID,
+	[geo_full].DICOFRE,
+	[geo_full].Freguesia,
+	'Urban or Rural' AS UsoSolo,
+	[geo_full].ÁreaFreg
+FROM [Sim4Sec].[dbo].[geo_full]
+
+LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Mun]
+ON [Dim_Mun].codDICO = [geo_full].DICO
+ORDER BY [geo_full].DICOFRE ASC
