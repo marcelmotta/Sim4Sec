@@ -24,7 +24,7 @@ CREATE TABLE [Dim_Freg] (
 -- CREATE MUNICIPIO DIMENSION
 CREATE TABLE [Dim_Mun] (
 	SK_MunID int identity PRIMARY KEY,
-	codDICO int,
+	codDICO nvarchar(4),
 	codDistrito nvarchar(255),
 	codMunicípio nvarchar(255),
 	codÁreaMun float
