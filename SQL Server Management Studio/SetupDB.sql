@@ -53,12 +53,19 @@ CREATE TABLE [pop_summary] (
     [Pop_2040] float
 )
 
+-- CREATE FREG AREA TABLE
+CREATE TABLE [area_freg] (
+    [DICOFRE] nvarchar(255),
+    [ÁreaFreg] float
+)
+
 -- CREATE DICOFRE TABLE
-CREATE TABLE [cod_freg] (
+CREATE TABLE [geo_full] (
 	[DI] nvarchar(2),
 	[Distrito] nvarchar(255),
 	[DICO] nvarchar(4),
 	[Município] nvarchar(255),
 	[DICOFRE] nvarchar(6),
-	[Freguesia] nvarchar(255)
+	[Freguesia] nvarchar(255),
+	[ÁreaFreg] float
 )

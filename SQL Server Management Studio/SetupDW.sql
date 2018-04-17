@@ -13,7 +13,7 @@ SET QUOTED_IDENTIFIER ON;
 
 -- CREATE FREGUESIA DIMENSION
 CREATE TABLE [Dim_Freg] (
-	SK_FregID int PRIMARY KEY,
+	SK_FregID int identity PRIMARY KEY,
 	FK_MunID int,
 	codDICOFRE nvarchar(6),
 	codFreguesia nvarchar(255),
@@ -23,7 +23,7 @@ CREATE TABLE [Dim_Freg] (
 
 -- CREATE MUNICIPIO DIMENSION
 CREATE TABLE [Dim_Mun] (
-	SK_MunID int PRIMARY KEY,
+	SK_MunID int identity PRIMARY KEY,
 	codDICO int,
 	codDistrito nvarchar(255),
 	codMunicípio nvarchar(255),
@@ -32,7 +32,7 @@ CREATE TABLE [Dim_Mun] (
 
 -- CREATE POSTOSGNR DIMENSION
 CREATE TABLE [Dim_Postos] (
-	SK_PostoID int PRIMARY KEY,
+	SK_PostoID int identity PRIMARY KEY,
 	FK_FregID int,
 	posPostoID int,
 	posActuação nvarchar(255),
@@ -44,7 +44,7 @@ CREATE TABLE [Dim_Postos] (
 
 -- CREATE CRIMES DIMENSION
 CREATE TABLE [Dim_Crime] (
-	SK_CrimeID int PRIMARY KEY,
+	SK_CrimeID int identity PRIMARY KEY,
 	criClasse nvarchar(255),
 	criSubclasse nvarchar(255),
 	criDescrição nvarchar(255)
@@ -52,14 +52,14 @@ CREATE TABLE [Dim_Crime] (
 
 -- CREATE SOCIOECONOMICO DIMENSION
 CREATE TABLE [Dim_SocEcon] (
-	SK_SocEconID int PRIMARY KEY,
+	SK_SocEconID int identity PRIMARY KEY,
 	socÍndice nvarchar(255),
 	socDescrição nvarchar(255)
 )
 
 -- CREATE ANO TABLE
 CREATE TABLE [Dim_Ano] (
-	SK_AnoID int PRIMARY KEY,
+	SK_AnoID int identity PRIMARY KEY,
 	anoAno int
 )
 
