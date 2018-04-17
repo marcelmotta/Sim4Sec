@@ -115,3 +115,63 @@ CREATE TABLE [Fact_Demografia] (
 ON [PRIMARY]
 ;
 
+--ADD FOREIGN KEYS CONTRAINTS FOR FACT_SEGURANÇA
+ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Freg] FOREIGN KEY([FK_FregID])
+REFERENCES [dbo].[Dim_Freg] ([SK_FregID])
+
+ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Postos] FOREIGN KEY([FK_PostoID])
+REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
+
+ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Ano] FOREIGN KEY([FK_AnoID])
+REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
+
+--ADD FOREIGN KEYS CONTRAINTS FOR FACT_CRIME
+ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Crime] FOREIGN KEY([FK_CrimeID])
+REFERENCES [dbo].[Dim_Crime] ([SK_CrimeID])
+
+ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Postos] FOREIGN KEY([FK_PostoID])
+REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
+
+ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Ano] FOREIGN KEY([FK_AnoID])
+REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
+
+--ADD FOREIGN KEYS CONTRAINTS FOR FACT_DEMOGRAFIA
+ALTER TABLE [dbo].[Fact_Demografia]  WITH CHECK ADD  CONSTRAINT [Measure_Dem-Dim_SocEcon] FOREIGN KEY([FK_SocEconID])
+REFERENCES [dbo].[Dim_SocEcon] ([SK_SocEconID])
+
+ALTER TABLE [dbo].[Fact_Demografia]  WITH CHECK ADD  CONSTRAINT [Measure_Dem-Dim_Mun] FOREIGN KEY([FK_MunID])
+REFERENCES [dbo].[Dim_Mun] ([SK_MunID])
+
+ALTER TABLE [dbo].[Fact_Demografia]  WITH CHECK ADD  CONSTRAINT [Measure_Dem-Dim_Ano] FOREIGN KEY([FK_AnoID])
+REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
+
+-- ADD FOREING KEY CONSTAINT FOR DIM_FREG
+ALTER TABLE [dbo].[Dim_Freg]  WITH CHECK ADD  CONSTRAINT [FK_Freg_Mun] FOREIGN KEY([FK_MunID])
+REFERENCES [dbo].[Dim_Mun] ([SK_MunID])
+
+
+/*
+-- WIPE DATA FROM DW
+TRUNCATE TABLE [Fact_Segurança]
+TRUNCATE TABLE [Fact_Crime]
+TRUNCATE TABLE [Fact_Demografia]
+
+DELETE FROM [Dim_Ano]
+DELETE FROM [Dim_Crime]
+DELETE FROM [Dim_Freg]
+DELETE FROM [Dim_Mun]
+DELETE FROM [Dim_Postos]
+DELETE FROM [Dim_SocEcon]
+
+--RESET IDENTITY COUNT
+DBCC CHECKIDENT ('[Dim_Ano]', RESEED, 0);
+DBCC CHECKIDENT ('[Dim_Crime]', RESEED, 0);
+DBCC CHECKIDENT ('[Dim_Freg]', RESEED, 0);
+DBCC CHECKIDENT ('[Dim_Mun]', RESEED, 0);
+DBCC CHECKIDENT ('[Dim_Postos]', RESEED, 0);
+DBCC CHECKIDENT ('[Dim_SocEcon]', RESEED, 0);
+
+-- DROP DW IN USE
+USE master;
+ALTER DATABASE [Sim4Sec_DW] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+DROP DATABASE [Sim4Sec_DW] ;
