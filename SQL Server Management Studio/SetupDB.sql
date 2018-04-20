@@ -69,3 +69,14 @@ CREATE TABLE [geo_full] (
 	[Freguesia] nvarchar(255),
 	[ÁreaFreg] float
 )
+
+-- CREATE POLICE TABLE
+CREATE TABLE [efectivos] (
+	[DICOFRE] nvarchar(6),
+	[Actuação] nvarchar(6),
+	[Comando] nvarchar(255),
+	[Destacamento] nvarchar(255),
+	[Posto] nvarchar(255),
+	[PostoID] nvarchar(11),
+	[Efectivo] nvarchar(255)
+)

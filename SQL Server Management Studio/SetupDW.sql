@@ -33,13 +33,12 @@ CREATE TABLE [Dim_Mun] (
 -- CREATE POSTOSGNR DIMENSION
 CREATE TABLE [Dim_Postos] (
 	SK_PostoID int identity PRIMARY KEY,
-	FK_FregID int,
-	posPostoID int,
+	posPostoID nvarchar(11),
 	posActuação nvarchar(255),
 	posComando nvarchar(255),
 	posDestacamento nvarchar(255),
 	posPosto nvarchar(255),
-	posEfectivo int
+	posEfectivo nvarchar(255)
 )
 
 -- CREATE CRIMES DIMENSION
@@ -145,9 +144,10 @@ REFERENCES [dbo].[Dim_Mun] ([SK_MunID])
 ALTER TABLE [dbo].[Fact_Demografia]  WITH CHECK ADD  CONSTRAINT [Measure_Dem-Dim_Ano] FOREIGN KEY([FK_AnoID])
 REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 
--- ADD FOREING KEY CONSTAINT FOR DIM_FREG
+-- ADD FOREIGN KEY CONSTAINT FOR DIM_FREG
 ALTER TABLE [dbo].[Dim_Freg]  WITH CHECK ADD  CONSTRAINT [FK_Freg_Mun] FOREIGN KEY([FK_MunID])
 REFERENCES [dbo].[Dim_Mun] ([SK_MunID])
+
 
 
 /*

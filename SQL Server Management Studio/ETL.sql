@@ -154,3 +154,14 @@ FROM [Sim4Sec].[dbo].[geo_full]
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Mun]
 ON [Dim_Mun].codDICO = [geo_full].DICO
 ORDER BY [geo_full].DICOFRE ASC
+
+-- LOAD DIM_POSTOS
+INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Postos]
+SELECT 
+	[efectivos].PostoID,
+	[efectivos].Actuação,
+	[efectivos].Comando,
+	[efectivos].Destacamento,
+	[efectivos].Posto,
+	[efectivos].Efectivo
+FROM [Sim4Sec].[dbo].[efectivos]
