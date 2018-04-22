@@ -80,3 +80,12 @@ CREATE TABLE [efectivos] (
 	[PostoID] nvarchar(11),
 	[Efectivo] nvarchar(255)
 )
+
+-- CREATE LAND USAGE TABLE
+CREATE TABLE [uso_solo] (
+    [DICOFRE] nvarchar(255),
+    [Classe] nvarchar(255),
+    [Area_Km2] float,
+    [Area_ha] float,
+    [Ano] float
+)
