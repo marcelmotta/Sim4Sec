@@ -97,6 +97,10 @@ INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Ano] (
 SELECT DISTINCT
 	[crime_hist].Ano
 FROM [Sim4Sec].[dbo].[crime_hist]
+UNION
+SELECT '2030'
+UNION
+SELECT '2040'
 
 -- LOAD DIM_CRIME
 INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Crime] (
@@ -122,10 +126,10 @@ FROM [Sim4Sec].[dbo].[socecon_meta]
 
 -- LOAD DIM_MUN
 INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Mun] (
-	codDICO,
-	codDistrito,
-	codMunicípio,
-	codÁreaMun
+	munDICO,
+	munDistrito,
+	munMunicípio,
+	munÁreaMun
 )
 SELECT
 	[geo_full].DICO,
@@ -138,21 +142,19 @@ GROUP BY [geo_full].DICO, [geo_full].Distrito,[geo_full].Município
 -- LOAD DIM_FREG
 INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Freg] (
 	FK_MunID,
-	codDICOFRE,
-	codFreguesia,
-	codUsoSolo,
-	codÁreaFreg
+	freDICOFRE,
+	freFreguesia,
+	freÁreaFreg
 )
 SELECT
 	[Dim_Mun].SK_MunID,
 	[geo_full].DICOFRE,
 	[geo_full].Freguesia,
-	'Urban or Rural' AS UsoSolo,
 	[geo_full].ÁreaFreg
 FROM [Sim4Sec].[dbo].[geo_full]
 
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Mun]
-ON [Dim_Mun].codDICO = [geo_full].DICO
+ON [Dim_Mun].munDICO = [geo_full].DICO
 ORDER BY [geo_full].DICOFRE ASC
 
 -- LOAD DIM_POSTOS
@@ -165,3 +167,26 @@ SELECT
 	[efectivos].Posto,
 	[efectivos].Efectivo
 FROM [Sim4Sec].[dbo].[efectivos]
+
+-- LOAD DIM_USOSOLO
+INSERT INTO [Sim4Sec_DW].[dbo].[Dim_UsoSolo]
+SELECT DISTINCT
+	[uso_solo].Classe
+FROM [Sim4Sec].[dbo].[uso_solo]
+
+-- LOAD FACT_TERRITÓRIO
+INSERT INTO [Sim4Sec_DW].[dbo].[Fact_Território]
+SELECT
+	[Dim_Freg].SK_FregID AS FK_FregID,
+	[Dim_UsoSolo].SK_UsoSoloID AS FK_UsoSoloID,
+	[Dim_Ano].SK_AnoID AS FK_Ano,
+	[uso_solo].Area_Km2 AS ÁreaporSolo
+FROM [Sim4Sec].[dbo].uso_solo
+
+LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Freg]
+ON [uso_solo].DICOFRE = [Dim_Freg].freDICOFRE
+LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_UsoSolo]
+ON [uso_solo].Classe = [Dim_UsoSolo].usoClasse
+LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Ano]
+ON [uso_solo].Ano = [Dim_Ano].anoAno
+	

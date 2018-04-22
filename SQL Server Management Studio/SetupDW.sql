@@ -15,19 +15,18 @@ SET QUOTED_IDENTIFIER ON;
 CREATE TABLE [Dim_Freg] (
 	SK_FregID int identity PRIMARY KEY,
 	FK_MunID int,
-	codDICOFRE nvarchar(6),
-	codFreguesia nvarchar(255),
-	codUsoSolo nvarchar(255),
-	codÁreaFreg float
+	freDICOFRE nvarchar(6),
+	freFreguesia nvarchar(255),
+	freÁreaFreg float
 )
 
 -- CREATE MUNICIPIO DIMENSION
 CREATE TABLE [Dim_Mun] (
 	SK_MunID int identity PRIMARY KEY,
-	codDICO nvarchar(4),
-	codDistrito nvarchar(255),
-	codMunicípio nvarchar(255),
-	codÁreaMun float
+	munDICO nvarchar(4),
+	munDistrito nvarchar(255),
+	munMunicípio nvarchar(255),
+	munÁreaMun float
 )
 
 -- CREATE POSTOSGNR DIMENSION
@@ -56,10 +55,16 @@ CREATE TABLE [Dim_SocEcon] (
 	socDescrição nvarchar(255)
 )
 
--- CREATE ANO TABLE
+-- CREATE ANO DIMENSION
 CREATE TABLE [Dim_Ano] (
 	SK_AnoID int identity PRIMARY KEY,
 	anoAno int
+)
+
+-- CREATE USOSOLO DIMENSION
+CREATE TABLE [Dim_UsoSolo] (
+	SK_UsoSoloID int identity PRIMARY KEY,
+	usoClasse nvarchar(255)
 )
 
 -- CREATE SEGURANÇA FACT
@@ -114,6 +119,22 @@ CREATE TABLE [Fact_Demografia] (
 ON [PRIMARY]
 ;
 
+-- CREATE TERRITORIO FACT
+CREATE TABLE [Fact_Território] (
+	FK_FregID int,
+	FK_UsoSoloID int,
+	FK_AnoID int,
+	ÁreaporSolo float
+
+	CONSTRAINT [PK_Measure_Ter] PRIMARY KEY CLUSTERED (
+	[FK_FregID] ASC,
+	[FK_UsoSoloID] ASC,
+	[FK_AnoID] ASC
+)
+)
+ON [PRIMARY]
+;
+
 --ADD FOREIGN KEYS CONTRAINTS FOR FACT_SEGURANÇA
 ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Freg] FOREIGN KEY([FK_FregID])
 REFERENCES [dbo].[Dim_Freg] ([SK_FregID])
@@ -123,6 +144,7 @@ REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
 
 ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Ano] FOREIGN KEY([FK_AnoID])
 REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
+
 
 --ADD FOREIGN KEYS CONTRAINTS FOR FACT_CRIME
 ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Crime] FOREIGN KEY([FK_CrimeID])
@@ -134,6 +156,7 @@ REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
 ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Ano] FOREIGN KEY([FK_AnoID])
 REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 
+
 --ADD FOREIGN KEYS CONTRAINTS FOR FACT_DEMOGRAFIA
 ALTER TABLE [dbo].[Fact_Demografia]  WITH CHECK ADD  CONSTRAINT [Measure_Dem-Dim_SocEcon] FOREIGN KEY([FK_SocEconID])
 REFERENCES [dbo].[Dim_SocEcon] ([SK_SocEconID])
@@ -143,6 +166,18 @@ REFERENCES [dbo].[Dim_Mun] ([SK_MunID])
 
 ALTER TABLE [dbo].[Fact_Demografia]  WITH CHECK ADD  CONSTRAINT [Measure_Dem-Dim_Ano] FOREIGN KEY([FK_AnoID])
 REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
+
+
+--ADD FOREIGN KEYS CONTRAINTS FOR FACT_TERRITÓRIO
+ALTER TABLE [dbo].[Fact_Território]  WITH CHECK ADD  CONSTRAINT [Measure_Ter-Dim_Freg] FOREIGN KEY([FK_FregID])
+REFERENCES [dbo].[Dim_Freg] ([SK_FregID])
+
+ALTER TABLE [dbo].[Fact_Território]  WITH CHECK ADD  CONSTRAINT [Measure_Ter-Dim_UsoSolo] FOREIGN KEY([FK_UsoSoloID])
+REFERENCES [dbo].[Dim_UsoSolo] ([SK_UsoSoloID])
+
+ALTER TABLE [dbo].[Fact_Território]  WITH CHECK ADD  CONSTRAINT [Measure_Ter-Dim_Ano] FOREIGN KEY([FK_AnoID])
+REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
+
 
 -- ADD FOREIGN KEY CONSTAINT FOR DIM_FREG
 ALTER TABLE [dbo].[Dim_Freg]  WITH CHECK ADD  CONSTRAINT [FK_Freg_Mun] FOREIGN KEY([FK_MunID])
