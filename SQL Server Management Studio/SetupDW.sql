@@ -15,6 +15,7 @@ SET QUOTED_IDENTIFIER ON;
 CREATE TABLE [Dim_Freg] (
 	SK_FregID int identity PRIMARY KEY,
 	FK_MunID int,
+	FK_PostoID int,
 	freDICOFRE nvarchar(6),
 	freFreguesia nvarchar(255),
 	freÁreaFreg float
@@ -33,6 +34,7 @@ CREATE TABLE [Dim_Mun] (
 CREATE TABLE [Dim_Postos] (
 	SK_PostoID int identity PRIMARY KEY,
 	posPostoID nvarchar(11),
+	posDICOFRE nvarchar(6),
 	posActuação nvarchar(255),
 	posComando nvarchar(255),
 	posDestacamento nvarchar(255),
@@ -70,7 +72,6 @@ CREATE TABLE [Dim_UsoSolo] (
 -- CREATE SEGURANÇA FACT
 CREATE TABLE [Fact_Segurança] (
 	FK_FregID int,
-	FK_PostoID int,
 	FK_AnoID int,
 	PopulaçãoFreg int,
 	DensDemográfica float,
@@ -78,7 +79,6 @@ CREATE TABLE [Fact_Segurança] (
 
 	CONSTRAINT [PK_Measure_Seg] PRIMARY KEY CLUSTERED (
 	[FK_FregID] ASC,
-	[FK_PostoID] ASC,
 	[FK_AnoID] ASC
 )
 )
@@ -139,9 +139,6 @@ ON [PRIMARY]
 ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Freg] FOREIGN KEY([FK_FregID])
 REFERENCES [dbo].[Dim_Freg] ([SK_FregID])
 
-ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Postos] FOREIGN KEY([FK_PostoID])
-REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
-
 ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Ano] FOREIGN KEY([FK_AnoID])
 REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 
@@ -182,6 +179,9 @@ REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 -- ADD FOREIGN KEY CONSTAINT FOR DIM_FREG
 ALTER TABLE [dbo].[Dim_Freg]  WITH CHECK ADD  CONSTRAINT [FK_Freg_Mun] FOREIGN KEY([FK_MunID])
 REFERENCES [dbo].[Dim_Mun] ([SK_MunID])
+
+ALTER TABLE [dbo].[Dim_Freg]  WITH CHECK ADD  CONSTRAINT [FK_Freg_Pos] FOREIGN KEY([FK_PostoID])
+REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
 
 
 

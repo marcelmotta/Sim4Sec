@@ -53,6 +53,14 @@ CREATE TABLE [pop_summary] (
     [Pop_2040] float
 )
 
+-- CREATE POPULATION FULL TABLE
+CREATE TABLE [pop_full] (
+    [DICOFRE] nvarchar(6),
+    [Nome] nvarchar(255),
+    [Ano] int,
+	[ValorPop] int
+)
+
 -- CREATE FREG AREA TABLE
 CREATE TABLE [area_freg] (
     [DICOFRE] nvarchar(255),
