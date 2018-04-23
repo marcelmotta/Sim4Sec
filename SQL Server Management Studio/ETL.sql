@@ -259,7 +259,7 @@ SELECT
 	[Dim_Ano].SK_AnoID AS FK_AnoID,
 	[pop_full].ValorPop,
 	ROUND([pop_full].ValorPop / [Dim_Freg].freÁreaFreg, 2) AS DensDemográfica,
-	[efectivos].Efectivo / [pop_full].ValorPop AS PolporHabitante
+	CAST(CAST([efectivos].Efectivo AS float) / CAST([pop_full].ValorPop AS float) AS DECIMAL(10,5)) AS PolporHabitante
 FROM [Sim4Sec].[dbo].[pop_full]
 
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Freg]
