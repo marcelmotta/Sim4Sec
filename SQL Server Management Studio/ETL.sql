@@ -78,11 +78,12 @@ SELECT DISTINCT
 	[socecon_data2011].Município,
 	[pop_full].DICOFRE, 
 	[pop_full].Nome AS Freguesia,
-	CAST(ROUND([area_freg].ÁreaFreg,2) AS DECIMAL(10,2)) AS ÁreaFreg
+	CAST([area_freg].ÁreaFreg AS DECIMAL(10,2)) AS ÁreaFreg
 FROM [socecon_data2011]
 
 LEFT JOIN [crime_hist]
 ON [crime_hist].Município = [socecon_data2011].Município
+COLLATE Latin1_general_CI_AI
 LEFT JOIN [pop_full]
 ON [socecon_data2011].DICO =
 	CASE
@@ -91,8 +92,6 @@ ON [socecon_data2011].DICO =
 	END
 LEFT JOIN [area_freg]
 ON [area_freg].DICOFRE = [pop_full].DICOFRE
-
-COLLATE Latin1_general_CI_AI
 WHERE [socecon_data2011].Índice = 'Area'
 ORDER by DI, DICO, DICOFRE ASC
 
@@ -216,6 +215,7 @@ LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_UsoSolo]
 ON [uso_solo].Classe = [Dim_UsoSolo].usoClasse
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Ano]
 ON [uso_solo].Ano = [Dim_Ano].anoAno
+WHERE SK_FregID = '86'
 
 -- LOAD FACT_CRIME
 INSERT INTO [Sim4Sec_DW].[dbo].[Fact_Crime]
