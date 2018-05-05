@@ -234,7 +234,8 @@ COLLATE Latin1_general_CI_AI
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Ano]
 ON [crime_hist].Ano = [Dim_Ano].anoAno
 WHERE [crime_hist].Território = 'Continente'
-ORDER BY FK_MunID, FK_CrimeID, FK_AnoID
+AND SK_MunID != '279'
+ORDER BY FK_CrimeID, FK_MunID, FK_AnoID
 
 
 -- LOAD FACT_DEMOGRAFIA
