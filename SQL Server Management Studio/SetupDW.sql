@@ -150,6 +150,9 @@ REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Crime] FOREIGN KEY([FK_CrimeID])
 REFERENCES [dbo].[Dim_Crime] ([SK_CrimeID])
 
+ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Mun] FOREIGN KEY([FK_MunID])
+REFERENCES [dbo].[Dim_Mun] ([SK_MunID])
+
 ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Ano] FOREIGN KEY([FK_AnoID])
 REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 
