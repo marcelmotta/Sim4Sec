@@ -206,7 +206,7 @@ SELECT
 	[Dim_Freg].SK_FregID AS FK_FregID,
 	[Dim_UsoSolo].SK_UsoSoloID AS FK_UsoSoloID,
 	[Dim_Ano].SK_AnoID AS FK_Ano,
-	[uso_solo].Area_Km2 AS ÁreaporSolo
+	SUM([uso_solo].Area_Km2) AS ÁreaporSolo
 FROM [Sim4Sec].[dbo].uso_solo
 
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Freg]
@@ -215,7 +215,9 @@ LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_UsoSolo]
 ON [uso_solo].Classe = [Dim_UsoSolo].usoClasse
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Ano]
 ON [uso_solo].Ano = [Dim_Ano].anoAno
-WHERE SK_FregID = '86'
+GROUP BY SK_FregID, SK_UsoSoloID, SK_AnoID
+ORDER BY SK_FregID, SK_UsoSoloID, SK_AnoID
+
 
 -- LOAD FACT_CRIME
 INSERT INTO [Sim4Sec_DW].[dbo].[Fact_Crime]
@@ -258,6 +260,7 @@ ON '2011' = [Dim_Ano].anoAno
 INSERT INTO [Sim4Sec_DW].[dbo].[Fact_Segurança]
 SELECT
 	[Dim_Freg].SK_FregID AS FK_FregID,
+	[Dim_Postos].SK_PostoID AS FK_PostoID,
 	[Dim_Ano].SK_AnoID AS FK_AnoID,
 	[pop_full].ValorPop,
 	ROUND([pop_full].ValorPop / [Dim_Freg].freÁreaFreg, 2) AS DensDemográfica,
@@ -266,9 +269,11 @@ FROM [Sim4Sec].[dbo].[pop_full]
 
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Freg]
 ON [pop_full].DICOFRE = [Dim_Freg].freDICOFRE
+LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Postos]
+ON [pop_full].DICOFRE = [Dim_Postos].posDICOFRE
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Ano]
 ON [pop_full].Ano = [Dim_Ano].anoAno
 LEFT JOIN [Sim4Sec].[dbo].[efectivos]
 ON [pop_full].DICOFRE = [efectivos].DICOFRE
-ORDER BY SK_AnoID, SK_FregID
+ORDER BY SK_AnoID, SK_PostoID, SK_FregID
 
