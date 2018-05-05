@@ -72,6 +72,7 @@ CREATE TABLE [Dim_UsoSolo] (
 -- CREATE SEGURANÇA FACT
 CREATE TABLE [Fact_Segurança] (
 	FK_FregID int,
+	FK_PostoID int,
 	FK_AnoID int,
 	PopulaçãoFreg int,
 	DensDemográfica float,
@@ -79,6 +80,7 @@ CREATE TABLE [Fact_Segurança] (
 
 	CONSTRAINT [PK_Measure_Seg] PRIMARY KEY CLUSTERED (
 	[FK_FregID] ASC,
+	[FK_PostoID] ASC,
 	[FK_AnoID] ASC
 )
 )
@@ -89,14 +91,12 @@ ON [PRIMARY]
 CREATE TABLE [Fact_Crime] (
 	FK_CrimeID int,
 	FK_MunID int,
-	FK_PostoID int,
 	FK_AnoID int,
 	Eventos int
 
 	CONSTRAINT [PK_Measure_Cri] PRIMARY KEY CLUSTERED (
 	[FK_CrimeID] ASC,
 	[FK_MunID] ASC,
-	[FK_PostoID] ASC,
 	[FK_AnoID] ASC
 )
 )
@@ -139,6 +139,9 @@ ON [PRIMARY]
 ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Freg] FOREIGN KEY([FK_FregID])
 REFERENCES [dbo].[Dim_Freg] ([SK_FregID])
 
+ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Postos] FOREIGN KEY([FK_PostoID])
+REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
+
 ALTER TABLE [dbo].[Fact_Segurança]  WITH CHECK ADD  CONSTRAINT [Measure_Seg-Dim_Ano] FOREIGN KEY([FK_AnoID])
 REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 
@@ -146,9 +149,6 @@ REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 --ADD FOREIGN KEYS CONTRAINTS FOR FACT_CRIME
 ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Crime] FOREIGN KEY([FK_CrimeID])
 REFERENCES [dbo].[Dim_Crime] ([SK_CrimeID])
-
-ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Postos] FOREIGN KEY([FK_PostoID])
-REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
 
 ALTER TABLE [dbo].[Fact_Crime]  WITH CHECK ADD  CONSTRAINT [Measure_Cri-Dim_Ano] FOREIGN KEY([FK_AnoID])
 REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
@@ -187,6 +187,8 @@ REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
 
 /*
 -- WIPE DATA FROM DW
+USE [Sim4Sec_DW]
+
 TRUNCATE TABLE [Fact_Segurança]
 TRUNCATE TABLE [Fact_Crime]
 TRUNCATE TABLE [Fact_Demografia]
