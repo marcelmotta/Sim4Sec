@@ -230,9 +230,10 @@ LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Crime]
 ON [crime_hist].Índice = [Dim_Crime].criDescrição
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Mun]
 ON [crime_hist].Município = [Dim_Mun].munMunicípio
+COLLATE Latin1_general_CI_AI
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Ano]
 ON [crime_hist].Ano = [Dim_Ano].anoAno
-WHERE [Dim_Mun].SK_MunID IS NOT NULL
+WHERE [crime_hist].Território = 'Continente'
 ORDER BY FK_MunID, FK_CrimeID, FK_AnoID
 
 
