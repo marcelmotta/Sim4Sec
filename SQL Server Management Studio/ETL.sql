@@ -161,14 +161,12 @@ SELECT
 -- LOAD DIM_FREG
 INSERT INTO [Sim4Sec_DW].[dbo].[Dim_Freg] (
 	FK_MunID,
-	FK_PostoID,
 	freDICOFRE,
 	freFreguesia,
 	freÁreaFreg
 )
 SELECT
 	[Dim_Mun].SK_MunID,
-	[Dim_Postos].SK_PostoID,
 	[geo_full].DICOFRE,
 	[geo_full].Freguesia,
 	[geo_full].ÁreaFreg
@@ -176,8 +174,6 @@ FROM [Sim4Sec].[dbo].[geo_full]
 
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Mun]
 ON [Dim_Mun].munDICO = [geo_full].DICO
-LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Postos]
-ON [Dim_Postos].posDICOFRE = [geo_full].DICOFRE
 ORDER BY [geo_full].DICOFRE ASC
 
 
@@ -189,8 +185,7 @@ SELECT
 	[efectivos].Actuação,
 	[efectivos].Comando,
 	[efectivos].Destacamento,
-	[efectivos].Posto,
-	[efectivos].Efectivo
+	[efectivos].Posto
 FROM [Sim4Sec].[dbo].[efectivos]
 
 
@@ -264,7 +259,7 @@ SELECT
 	[Dim_Ano].SK_AnoID AS FK_AnoID,
 	[pop_full].ValorPop,
 	ROUND([pop_full].ValorPop / [Dim_Freg].freÁreaFreg, 2) AS DensDemográfica,
-	CAST(CAST([efectivos].Efectivo AS float) / CAST([pop_full].ValorPop AS float) AS DECIMAL(10,5)) AS PolporHabitante
+	CAST(CAST([efectivos].Efectivo AS float) / CAST([pop_full].ValorPop AS float) *1000 AS DECIMAL(10,2)) AS [Pol/MilHabitantes]
 FROM [Sim4Sec].[dbo].[pop_full]
 
 LEFT JOIN [Sim4Sec_DW].[dbo].[Dim_Freg]

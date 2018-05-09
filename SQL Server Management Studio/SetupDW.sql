@@ -15,7 +15,6 @@ SET QUOTED_IDENTIFIER ON;
 CREATE TABLE [Dim_Freg] (
 	SK_FregID int identity PRIMARY KEY,
 	FK_MunID int,
-	FK_PostoID int,
 	freDICOFRE nvarchar(6),
 	freFreguesia nvarchar(255),
 	freÁreaFreg float
@@ -38,8 +37,7 @@ CREATE TABLE [Dim_Postos] (
 	posActuação nvarchar(255),
 	posComando nvarchar(255),
 	posDestacamento nvarchar(255),
-	posPosto nvarchar(255),
-	posEfectivo nvarchar(255)
+	posPosto nvarchar(255)
 )
 
 -- CREATE CRIMES DIMENSION
@@ -76,7 +74,7 @@ CREATE TABLE [Fact_Segurança] (
 	FK_AnoID int,
 	PopulaçãoFreg int,
 	DensDemográfica float,
-	PolporHabitante float
+	[Pol/MilHabitantes] float
 
 	CONSTRAINT [PK_Measure_Seg] PRIMARY KEY CLUSTERED (
 	[FK_FregID] ASC,
@@ -182,10 +180,6 @@ REFERENCES [dbo].[Dim_Ano] ([SK_AnoID])
 -- ADD FOREIGN KEY CONSTAINT FOR DIM_FREG
 ALTER TABLE [dbo].[Dim_Freg]  WITH CHECK ADD  CONSTRAINT [FK_Freg_Mun] FOREIGN KEY([FK_MunID])
 REFERENCES [dbo].[Dim_Mun] ([SK_MunID])
-
-ALTER TABLE [dbo].[Dim_Freg]  WITH CHECK ADD  CONSTRAINT [FK_Freg_Pos] FOREIGN KEY([FK_PostoID])
-REFERENCES [dbo].[Dim_Postos] ([SK_PostoID])
-
 
 
 /*
