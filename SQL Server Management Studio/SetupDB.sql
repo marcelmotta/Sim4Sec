@@ -86,7 +86,9 @@ CREATE TABLE [efectivos] (
 	[Destacamento] nvarchar(255),
 	[Posto] nvarchar(255),
 	[PostoID] nvarchar(11),
-	[Efectivo] nvarchar(255)
+	[Efectivo] nvarchar(255),
+	[Longitude] float,
+	[Latitude] float
 )
 
 -- CREATE LAND USAGE TABLE
