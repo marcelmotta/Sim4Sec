@@ -37,7 +37,9 @@ CREATE TABLE [Dim_Postos] (
 	posActuação nvarchar(255),
 	posComando nvarchar(255),
 	posDestacamento nvarchar(255),
-	posPosto nvarchar(255)
+	posPosto nvarchar(255),
+	posLongitude float,
+	posLatitude float
 )
 
 -- CREATE CRIMES DIMENSION

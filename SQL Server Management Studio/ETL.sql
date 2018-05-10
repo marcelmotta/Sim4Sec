@@ -185,7 +185,9 @@ SELECT
 	[efectivos].Actuação,
 	[efectivos].Comando,
 	[efectivos].Destacamento,
-	[efectivos].Posto
+	[efectivos].Posto,
+	[efectivos].Longitude,
+	[efectivos].Latitude
 FROM [Sim4Sec].[dbo].[efectivos]
 
 
