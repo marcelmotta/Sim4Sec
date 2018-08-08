@@ -7,6 +7,7 @@ Dim wsList As Variant
 
 Application.ScreenUpdating = False
 Application.CutCopyMode = False
+Application.DisplayStatusBar = True
 
 Application.ActiveWorkbook.Worksheets(1).Activate
 
@@ -14,7 +15,7 @@ wsCount = Worksheets.Count
 wsList = Array("Procedures", "Log", "Data2", "Data", "Sheet1")
 
 For Each ws In Worksheets
-    MsgBox "Checking sheet (" & ws.Index & "/" & wsCount & "): " & ws.Name
+    Application.StatusBar = "Checking sheet (" & ws.Index & "/" & wsCount & "): " & ws.Name
     If IsError(Application.Match(ws.Name, wsList, 0)) Then
         'Insert tasks here for sheets not found in array wsList
         MsgBox ws.Name & " updated"
@@ -23,8 +24,8 @@ For Each ws In Worksheets
     End If
 Next
 
+Application.StatusBar = False
 Worksheets(1).Activate
-
 MsgBox "Processing completed"
 
 End Sub
