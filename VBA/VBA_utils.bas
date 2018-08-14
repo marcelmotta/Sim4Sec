@@ -1,5 +1,38 @@
 Attribute VB_Name = "Module1"
+
+'Count number of rows for a given column
+Function rowCount(index As Integer)
+    rowCount = Cells(Rows.Count, index).End(xlUp).Row
+End Function
+
+'Count number of columns
+Function colCount()
+    colCount = Cells(1, Columns.Count).End(xlToLeft).Column
+End Function
+
+'Convert a column index from letter to number or from number to letter
+Function colIndexFinder(index)
+    On Error GoTo ErrHandler
+    Select Case IsNumeric(index)
+        Case True
+            colIndexFinder = Split(Cells(, index).Address, "$")(1)
+        Case Else
+            colIndexFinder = Range(index & 1).Column
+    End Select
+
+ErrHandler:    
+    Select Case Err.Number
+        Case 1004
+            colIndexFinder = 0
+        Case Else
+            Resume Next
+    End Select
+End Function
+
+'Public wsf As WorksheetFunction
 Sub IterateSheets()
+    
+'Set wsf = Application.WorksheetFunction
 
 Dim ws As Worksheet
 Dim wsCount As Integer
