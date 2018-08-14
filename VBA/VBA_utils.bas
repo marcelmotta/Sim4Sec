@@ -31,68 +31,68 @@ End Function
 
 'Public wsf As WorksheetFunction
 Sub IterateSheets()
-    
-'Set wsf = Application.WorksheetFunction
 
-Dim ws As Worksheet
-Dim wsCount As Integer
-Dim wsList As Variant
+    'Set wsf = Application.WorksheetFunction
 
-Application.ScreenUpdating = False
-Application.CutCopyMode = False
-Application.DisplayStatusBar = True
+    Dim ws As Worksheet
+    Dim wsCount As Integer
+    Dim wsList As Variant
 
-Application.ActiveWorkbook.Worksheets(1).Activate
+    Application.ScreenUpdating = False
+    Application.CutCopyMode = False
+    Application.DisplayStatusBar = True
 
-wsCount = Worksheets.Count
-wsList = Array("Procedures", "Log", "Data2", "Data", "Sheet1")
+    Application.ActiveWorkbook.Worksheets(1).Activate
 
-For Each ws In Worksheets
-    Application.StatusBar = "Checking sheet (" & ws.Index & "/" & wsCount & "): " & ws.Name
-    If IsError(Application.Match(ws.Name, wsList, 0)) Then
-        'Insert tasks here for sheets not found in array wsList
-        MsgBox ws.Name & " updated"
-    Else
-        MsgBox ws.Name & " ignored"
-    End If
-Next
+    wsCount = Worksheets.Count
+    wsList = Array("Procedures", "Log", "Data2", "Data", "Sheet1")
 
-Application.StatusBar = False
-Worksheets(1).Activate
-MsgBox "Processing completed"
+    For Each ws In Worksheets
+        Application.StatusBar = "Checking sheet (" & ws.Index & "/" & wsCount & "): " & ws.Name
+        If IsError(Application.Match(ws.Name, wsList, 0)) Then
+            'Insert tasks here for sheets not found in array wsList
+            MsgBox ws.Name & " updated"
+        Else
+            MsgBox ws.Name & " ignored"
+        End If
+    Next
+
+    Application.StatusBar = False
+    Worksheets(1).Activate
+    MsgBox "Processing completed"
 
 End Sub
 
 Sub IterateSheetsOld()
 
-Dim ws As Worksheet
-Dim wsCount As Integer
-Dim wsList As Variant
+    Dim ws As Worksheet
+    Dim wsCount As Integer
+    Dim wsList As Variant
 
-Application.ScreenUpdating = False
-Application.CutCopyMode = False
+    Application.ScreenUpdating = False
+    Application.CutCopyMode = False
 
-Application.ActiveWorkbook.Worksheets(1).Activate
+    Application.ActiveWorkbook.Worksheets(1).Activate
 
-wsCount = Worksheets.Count
-wsList = Array("Procedures", "Log", "Data2", "Data", "Sheet1")
+    wsCount = Worksheets.Count
+    wsList = Array("Procedures", "Log", "Data2", "Data", "Sheet1")
 
-For i = 1 To wsCount Step 1
-    MsgBox "Checking sheet (" & ActiveSheet.Index & "/" & wsCount & "): " & ActiveSheet.Name
-    If IsError(Application.Match(ActiveSheet.Name, wsList, 0)) Then
-        'Insert tasks here for sheets not found in array wsList
-        MsgBox ActiveSheet.Name & " updated"
-    Else
-        MsgBox ActiveSheet.Name & " ignored"
-    End If
-    
-    If i <> wsCount Then
-        ActiveSheet.Next.Activate
-    Else
-        Worksheets(1).Activate
-    End If
-Next i
+    For i = 1 To wsCount Step 1
+        MsgBox "Checking sheet (" & ActiveSheet.Index & "/" & wsCount & "): " & ActiveSheet.Name
+        If IsError(Application.Match(ActiveSheet.Name, wsList, 0)) Then
+            'Insert tasks here for sheets not found in array wsList
+            MsgBox ActiveSheet.Name & " updated"
+        Else
+            MsgBox ActiveSheet.Name & " ignored"
+        End If
 
-MsgBox "Processing completed"
+        If i <> wsCount Then
+            ActiveSheet.Next.Activate
+        Else
+            Worksheets(1).Activate
+        End If
+    Next i
+
+    MsgBox "Processing completed"
 
 End Sub
